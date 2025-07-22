@@ -1,5 +1,4 @@
 const express = require('express');
-
 const app = express();
 const port = 3000;
 
@@ -9,7 +8,9 @@ require('dotenv').config();
 // Rutas
 
 const entriesRoutes = require("./routes/entries.routes");
+const authorsRoutes = require("./routes/authors.routes");
 
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Welcome to my server!')
@@ -18,8 +19,9 @@ app.get('/', (req, res) => {
 // Habilitar las rutas - Middleware
 
 app.use('/api/entries',entriesRoutes);
+app.use('/api/authors',authorsRoutes);
 
-//app.use("*", error404);
+// app.use("*", error404);
 // app.use(error404);
 
   

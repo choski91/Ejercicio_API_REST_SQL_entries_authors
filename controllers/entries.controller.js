@@ -17,12 +17,21 @@ const getEntries = async (req, res) => {
 
 //PUT http://localhost:3000/api/entries/ 
 
+const createEntry = async (req, res) => {
+    const newEntry = req.body; 
+    const response = await author.createEntry(newEntry);
+    res.status(201).json({
+        "entry creado": response,
+        data: newEntry
+    });
+}
+
 //DELETE http://localhost:3000/api/entries/ 
 
 
 module.exports = {
     getEntries,
-    // createEntry,
-    //deleteEntry, --> DELETE
-    //updateEntry --> PUT
+    createEntry,
+    //updateEntry,
+    //deleteEntry,
 }

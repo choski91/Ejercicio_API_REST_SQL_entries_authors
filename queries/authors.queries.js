@@ -1,7 +1,8 @@
-  const queriesDos = {
+  const queries = {
     getAllAuthors: `SELECT *FROM authors`,
     getAuthorByEmail: `SELECT *
-    FROM authors `,
+    FROM authors
+    WHERE email=$1`,
     createAuthor:`INSERT INTO authors(name, surname, email, image)
     VALUES($1,$2,$3,$4)`,
     updateAuthor:`UPDATE authors
@@ -10,6 +11,6 @@
     deleteAuthor:`DELETE FROM authors WHERE email=$1`
 };
 
-module.exports = queriesDos;
+module.exports = queries;
 
 
