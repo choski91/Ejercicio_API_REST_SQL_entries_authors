@@ -6,10 +6,9 @@ const router = express.Router();
 
 // Rutas 
 router.get('/', entriesController.getEntries);
-// router.post('/', entriesController.createEntry);
-// router.put('/', entriesController.editEntry);
-// router.delete('/', entriesController.deleteEntry);
-
+router.post('/', entriesController.createEntry);
+router.put('/', entriesController.updateEntry);
+router.delete('/', entriesController.deleteEntry);
 
 
 module.exports = router;
