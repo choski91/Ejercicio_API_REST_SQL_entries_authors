@@ -1,5 +1,5 @@
 const pool = require('../config/db_pgsql');
-const queries = require('../queries/authors.queries') 
+const queries = require('../queries/authors.queries')
 
 // GET
 const getAuthorByEmail = async (email) => {
@@ -22,7 +22,7 @@ const getAuthorByEmail = async (email) => {
 const getAllAuthors = async () => {
     let client, result;
     try {
-        client = await pool.connect(); // Espera a abrir conexion
+        client = await pool.connect();
         const data = await client.query(queries.getAllAuthors)
         console.log(data.rows)
         result = data.rows
@@ -40,8 +40,8 @@ const createAuthor = async (author) => {
     const { name, surname, email, image } = author;
     let client, result;
     try {
-        client = await pool.connect(); // Espera a abrir conexion
-        const data = await client.query(queries.createAuthor,[name, surname, email, image])
+        client = await pool.connect();
+        const data = await client.query(queries.createAuthor, [name, surname, email, image])
         result = data.rows
     } catch (err) {
         console.log(err);
@@ -52,23 +52,27 @@ const createAuthor = async (author) => {
     return result
 }
 
-//UPDATE
 const updateAuthor = async (author) => {
-    const { name, surname, email, image } = author;
-    let client;
+    const { oldEmail, name, surname, email, image } = author;
+    let client, result;
 
     try {
         client = await pool.connect();
-        await client.query(queries.updateAuthor, [name, surname, email, image]);
+        const data = await client.query(
+            queries.updateAuthor,
+            [oldEmail, name, surname, email, image]
+        );
+        result = data.rowCount;
     } catch (err) {
         console.error(err);
         throw err;
     } finally {
-        client.release();
+        if (client) client.release();
     }
 
-    return email;
+    return result;
 };
+
 
 //DELETE
 const deleteAuthor = async (email) => {
