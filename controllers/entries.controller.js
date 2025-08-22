@@ -28,9 +28,30 @@ const createEntry = async (req, res) => {
 
 //PUT http://localhost:3000/api/entries/
 
-const updateEntry = (req, res) => {
-    res.status(200).send("entry actualizado");
-}
+const updateEntry = async (req, res) => {
+    const updatedEntry = req.body; // { oldTitle, content, date, newTitle, category }
+
+    try {
+        const result = await entry.updateEntries(updatedEntry);
+
+        if (result === 0) {
+            return res.status(404).json({
+                message: `No se encontró la entry '${updatedEntry.oldTitle}'`
+            });
+        }
+
+        res.status(200).json({
+            message: `Se ha modificado la entry '${updatedEntry.oldTitle}' `
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: "Error al actualizar entry",
+            error: err.message
+        });
+    }
+};
+
 
 //DELETE http://localhost:3000/api/entries/ 
 const deleteEntry = async (req, res) => {

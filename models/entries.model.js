@@ -53,20 +53,24 @@ const createEntry = async (entry) => {
 
 //UPDATE
 const updateEntries = async (entry) => {
-    const { title, content, id_author, category } = author;
-    let client;
+    const { oldTitle, content, date, newTitle, category } = entry;
+    let client, result;
 
     try {
         client = await pool.connect();
-        await client.query(queries.updateEntries, [title, content, id_author, category]);
+        const data = await client.query(
+            queries.updateEntries,
+            [oldTitle, content, date, newTitle, category]
+        );
+        result = data.rowCount; 
     } catch (err) {
         console.error(err);
         throw err;
     } finally {
-        client.release();
+        if (client) client.release();
     }
 
-    return email;
+    return result;
 };
 
 //DELETE
